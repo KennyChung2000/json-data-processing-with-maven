@@ -2,7 +2,7 @@ package com.example;
 
 import java.io.FileReader;
 import java.util.ArrayList;
-import javax.print.DocFlavor.STRING;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -14,8 +14,8 @@ import org.json.simple.parser.*;
  */
 public class App {
     public static void main(String[] args) {
-        ArrayList<String> dataList1 = EcaJSONsample("data.json", "ecaNo");
-        ArrayList<String> dataList2 = EcaJSONsample("data2.json", "ecaNo");
+        ArrayList<String> dataList1 = EcJSONsample("data.json", "ecaNo");
+        ArrayList<String> dataList2 = EcJSONsample("data2.json", "ecaNo");
         ArrayList<String> differenceList = Compare(dataList1, dataList2);
         for (String s : differenceList)
             System.out.println(s);
@@ -24,7 +24,7 @@ public class App {
 
 
 
-    static ArrayList<String> EcaJSONsample(String file, String compareType) {
+    static ArrayList<String> EcJSONsample(String file, String compareType) {
         // JSONObject js = new JSONObject();
         // parsing file "JSONExample.json"
         ArrayList<String> list = new ArrayList<String>();
