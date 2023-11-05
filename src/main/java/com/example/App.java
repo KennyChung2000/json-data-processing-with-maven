@@ -14,17 +14,21 @@ import org.json.simple.parser.*;
  */
 public class App {
     public static void main(String[] args) {
-        ArrayList<String> dataList1 = EcJSONsample("data.json", "ecaNo");
-        ArrayList<String> dataList2 = EcJSONsample("data2.json", "ecaNo");
-        ArrayList<String> differenceList = Compare(dataList1, dataList2);
-        for (String s : differenceList)
+        ArrayList<String> dataList_ES = EcJSONsample_ES("ES.json", "ecaNo");
+        ArrayList<String> dataList2_DB = EcJSONsample_DB("ER.json", "ecr_no");
+        ArrayList<String> differenceList = Compare(dataList2_DB, dataList_ES);
+        int different = 0;
+        for (String s : differenceList) {
             System.out.println(s);
-        System.out.println("json end");
+            different += 1;
+        }
+        System.out.println("different=" + different);
+        // System.out.println("json end");
     }
 
 
 
-    static ArrayList<String> EcJSONsample(String file, String compareType) {
+    static ArrayList<String> EcJSONsample_ES(String file, String compareType) {
         // JSONObject js = new JSONObject();
         // parsing file "JSONExample.json"
         ArrayList<String> list = new ArrayList<String>();
@@ -47,16 +51,32 @@ public class App {
         return list;
     }
 
-    static ArrayList<String> Compare(ArrayList<String> list1, ArrayList<String> list2) {
+    static ArrayList<String> EcJSONsample_DB(String file, String compareType) {
+        // JSONObject js = new JSONObject();
+        // parsing file "JSONExample.json"
         ArrayList<String> list = new ArrayList<String>();
-        for (String s : list1) {
-            if (!list2.contains(s)) {
-                list.add(s);
-            }
+        try {
+            Object ob = new JSONParser().parse(new FileReader(file));
+            JSONObject js = (JSONObject) ob;
+            JSONArray js2 = (JSONArray) js.get("items");
+            for (int i = 0; i < js2.size(); i++) {
+                JSONObject js3 = (JSONObject) js2.get(i);
+                // System.out.println(js3.get("ecr_no"));
+                list.add(js3.get("ecr_no").toString());
+            } ;
+            System.out.println(file + "     " + "Toatal eca count : " + js2.size());
+
+        } catch (Exception e) {
+            System.out.println("file read error!!!=>                 " + e);
         }
-        for (String s : list2) {
-            if (!list1.contains(s)) {
-                list.add(s);
+        return list;
+    }
+
+    static ArrayList<String> Compare(ArrayList<String> list_DB, ArrayList<String> list_ES) {
+        ArrayList<String> list = new ArrayList<String>();
+        for (String Es : list_ES) {
+            if (!list_DB.contains(Es)) {
+                list.add(Es);
             }
         }
         return list;
